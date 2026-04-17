@@ -1,0 +1,250 @@
+{
+  "datasets": [
+    {
+      "name": "nyctaxi_trips",
+      "displayName": "NYC Taxi Trips",
+      "queryLines": [
+        "SELECT\n",
+        "  *\n",
+        "FROM\n",
+        "  trips"
+      ],
+      "catalog": "samples",
+      "schema": "nyctaxi"
+    },
+    {
+      "name": "top_pickup_zips",
+      "displayName": "Top 10 Pickup Zones",
+      "queryLines": [
+        "SELECT\n",
+        "  pickup_zip,\n",
+        "  COUNT(*) AS trip_count\n",
+        "FROM\n",
+        "  trips\n",
+        "GROUP BY\n",
+        "  pickup_zip\n",
+        "ORDER BY\n",
+        "  trip_count DESC\n",
+        "LIMIT 10"
+      ],
+      "catalog": "samples",
+      "schema": "nyctaxi"
+    }
+  ],
+  "pages": [
+    {
+      "name": "d4332d79",
+      "displayName": "Overview",
+      "layout": [
+        {
+          "widget": {
+            "name": "total_trips",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "nyctaxi_trips",
+                  "fields": [
+                    {
+                      "name": "count(*)",
+                      "expression": "COUNT(`*`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Total Trips",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "count(*)",
+                  "displayName": "Total Trips"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "avg_fare",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "nyctaxi_trips",
+                  "fields": [
+                    {
+                      "name": "avg(fare_amount)",
+                      "expression": "AVG(`fare_amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Average Fare",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg(fare_amount)",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "USD",
+                    "decimalPlaces": {
+                      "type": "exact",
+                      "places": 2
+                    },
+                    "abbreviation": "none"
+                  },
+                  "displayName": "Average Fare"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 0,
+            "width": 6,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "top_pickup_zips",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "top_pickup_zips",
+                  "fields": [
+                    {
+                      "name": "pickup_zip",
+                      "expression": "`pickup_zip`"
+                    },
+                    {
+                      "name": "sum(trip_count)",
+                      "expression": "SUM(`trip_count`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Top 10 Pickup Zones",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "pickup_zip",
+                  "displayName": "Pickup Zip",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(trip_count)",
+                  "displayName": "Trip Count",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 3,
+            "width": 6,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "monthly_trend",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "nyctaxi_trips",
+                  "fields": [
+                    {
+                      "name": "monthly(tpep_pickup_datetime)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `tpep_pickup_datetime`)"
+                    },
+                    {
+                      "name": "count(*)",
+                      "expression": "COUNT(`*`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Monthly Trip Trend",
+                "showTitle": true
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(tpep_pickup_datetime)",
+                  "displayName": "Month",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "count(*)",
+                  "displayName": "Trip Count",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 3,
+            "width": 6,
+            "height": 7
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
