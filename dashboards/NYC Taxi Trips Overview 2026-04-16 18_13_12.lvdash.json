@@ -2,7 +2,7 @@
   "datasets": [
     {
       "name": "nyctaxi_trips",
-      "displayName": "NYC Taxi Trips",
+      "displayName": "NYC Taxi Trips (Changed)",
       "queryLines": [
         "SELECT\n",
         "  *\n",
@@ -57,7 +57,7 @@
             "spec": {
               "version": 2,
               "frame": {
-                "title": "Total Trips",
+                "title": "Total Trips (Changed)",
                 "showTitle": true
               },
               "widgetType": "counter",
